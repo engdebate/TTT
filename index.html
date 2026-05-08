@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { font-family: 'Courier New', monospace; background: #0f1117; color: #e2e8f0; margin: 0; padding: 24px; }
+  h2 { color: #7dd3fc; margin-bottom: 4px; font-size: 1.1rem; letter-spacing: 0.05em; }
+  .subtitle { color: #64748b; font-size: 0.8rem; margin-bottom: 20px; }
+  .fix-badge { background: #16a34a; color: #fff; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; margin-left: 8px; vertical-align: middle; }
+  pre {
+    background: #1e2330;
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+    padding: 20px;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre;
+    color: #a5f3fc;
+  }
+  button {
+    margin-top: 16px;
+    background: #7dd3fc;
+    color: #0f1117;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+  button:active { opacity: 0.8; }
+</style>
+</head>
+<body>
+<h2>📋 Google Apps Script — 修正版 <span class="fix-badge">✓ FIXED</span></h2>
+<div class="subtitle">貼到 Apps Script 編輯器後執行 createRubricForm()</div>
+<pre id="code"></pre>
+<button onclick="copyCode()">📋 複製全部程式碼</button>
+
+<script>
+const code = `function createRubricForm() {
+  var form = FormApp.create('數學海報評分表');
+  form.setDescription(
+    '請誠實填寫。評分標準：4=Excellent, 3=Good, 2=Basic, 1=Poor\\n' +
+    '⚠️ 注意：若整組同學分數一樣，各項分工百分比請寫一樣的數字。'
+  );
+
+  // ── Q1: 組別單選 ──────────────────────────────────────────
+  var groupItem = form.addMultipleChoiceItem();
+  groupItem.setTitle('你的組別 / Your Group')
+    .setChoices([
+      groupItem.createChoice('Group 1：鄭楷平、林睿謙、洪翊銘、許震耀、黃志翔、劉泳廷'),
+      groupItem.createChoice('Group 2：李品毅、朱懿飛、呂汶家、張景翔、葉昱呈、鄭凱中'),
+      groupItem.createChoice('Group 3：廖翊庭、郭力瑜、詹可宥、廖苙宇、鄭丞妤'),
+      groupItem.createChoice('Group 4：朱玟瑜、李意琦、周芷伃、陳乙愛、陳韻安、楊淨茵'),
+      groupItem.createChoice('Group 6：翁瑄蔓、黃頌恩、張容華、黃晨恩、簡銘誼')
+    ])
+    .setRequired(true);
+
+  // ── Q2: 海報連結 ──────────────────────────────────────────
+  form.addTextItem()
+    .setTitle('海報連結 / Poster Link')
+    .setHelpText('請貼上你們的海報網址（Canva、Google Slides 等）')
+    .setRequired(true);
+
+  // ── Q3: 上傳 PDF（分開設定，避免語法錯誤）────────────────
+  var fileItem = form.addFileUploadItem();
+  fileItem.setTitle('上傳 PDF 檔案 / Upload PDF');
+  fileItem.setHelpText('請上傳你們的海報 PDF 檔案');
+  fileItem.setAllowedFileTypes(['pdf']);
+  fileItem.setRequired(true);
+
+  // ── 分工百分比說明區 ──────────────────────────────────────
+  form.addSectionHeaderItem()
+    .setTitle('分工百分比 / Division of Labor')
+    .setHelpText(
+      '⚠️ 提醒：若整組同學分數一樣，請每人填寫相同的百分比。\\n所有人的百分比總和應為 100%。'
+    );
+
+  // ── Q4~Q9: Rubric 評分（6個項目）────────────────────────
+  var rubricCategories = [
+    {
+      title: 'Mathematical Accuracy（數學正確性）',
+      help: '4=All math fully accurate | 3=Minor errors, main ideas clear | 2=Several errors | 1=Major errors'
+    },
+    {
+      title: 'Content Variety（內容多樣性）',
+      help: '4=Wide variety, rich examples | 3=Some variety | 2=Limited content | 1=Very little content'
+    },
+    {
+      title: 'Mathematical Concept Depth（數學概念深度）',
+      help: '4=Multiple advanced concepts | 3=At least one advanced concept | 2=Simple concepts | 1=Basic only'
+    },
+    {
+      title: 'Creativity（創意）',
+      help: '4=Highly creative & original | 3=Some creativity | 2=Limited creativity | 1=No creativity'
+    },
+    {
+      title: 'Poster Design（海報設計）',
+      help: '4=Visually appealing, balanced | 3=Clear, organized | 2=Somewhat disorganized | 1=Messy/hard to read'
+    },
+    {
+      title: 'Presentation（口頭報告）',
+      help: '4=Clear, confident, engaging | 3=Understandable | 2=Uneven delivery | 1=Unclear/unprepared'
+    }
+  ];
+
+  rubricCategories.forEach(function(cat) {
+    var item = form.addMultipleChoiceItem();
+    item.setTitle(cat.title)
+      .setHelpText(cat.help)
+      .setChoices([
+        item.createChoice('4 – Excellent'),
+        item.createChoice('3 – Good'),
+        item.createChoice('2 – Basic'),
+        item.createChoice('1 – Poor')
+      ])
+      .setRequired(true);
+  });
+
+  // ── Q10: 分工百分比輸入 ───────────────────────────────────
+  form.addTextItem()
+    .setTitle('你負責的分工百分比 / Your % of Division of Labor')
+    .setHelpText('請輸入數字，例如：20（代表 20%）。若整組分數相同，請填相同數字。')
+    .setRequired(true);
+
+  // ── 完成，印出表單連結 ────────────────────────────────────
+  var url = form.getPublishedUrl();
+  Logger.log('✅ 表單建立成功！');
+  Logger.log('📎 表單連結：' + url);
+}`;
+
+document.getElementById('code').textContent = code;
+
+function copyCode() {
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.querySelector('button');
+    btn.textContent = '✅ 已複製！';
+    setTimeout(() => btn.textContent = '📋 複製全部程式碼', 2000);
+  });
+}
+</script>
+</body>
+</html>
