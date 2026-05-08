@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>把 ChatGPT 畫布變成 GitHub Page</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="hero">
+    <h1>把 ChatGPT 畫布變成 GitHub Page</h1>
+    <p>從 ChatGPT 畫布產生網頁程式碼，整理成 GitHub Pages 可讀取的檔案結構，最後發布成可分享的網站。</p>
+  </header>
+
+  <nav class="nav">
+    <a href="#files">檔案結構</a>
+    <a href="#steps">發布步驟</a>
+    <a href="#tips">常見提醒</a>
+  </nav>
+
+  <main>
+    <section id="files">
+      <h2>一、需要準備哪些檔案？</h2>
+      <p class="lead">GitHub Pages 最基本的靜態網站通常會包含以下檔案。首頁檔案一定要命名為 <code>index.html</code>。</p>
+
+      <div class="folder-box">
+        📁 my-github-page/<br />
+        ├── <span>index.html</span><br />
+        ├── <span>style.css</span><br />
+        ├── <span>script.js</span><br />
+        └── 📁 images/
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <h3>index.html</h3>
+          <p>網站的主要內容與頁面架構。</p>
+        </article>
+        <article class="card">
+          <h3>style.css</h3>
+          <p>網站的顏色、字體、排版與視覺設計。</p>
+        </article>
+        <article class="card">
+          <h3>script.js</h3>
+          <p>網站的按鈕、互動與 JavaScript 功能。</p>
+        </article>
+        <article class="card">
+          <h3>images/</h3>
+          <p>放置網站圖片，例如截圖、流程圖或插圖。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="steps">
+      <h2>二、從 ChatGPT 畫布到 GitHub Pages</h2>
+
+      <div class="steps">
+        <article class="step">
+          <h3>1. 在 ChatGPT 畫布建立網頁</h3>
+          <p>請 ChatGPT 產生單頁網站，確認內容、排版與互動功能。</p>
+        </article>
+
+        <article class="step">
+          <h3>2. 整理成網站檔案</h3>
+          <p>HTML 放進 <code>index.html</code>，CSS 放進 <code>style.css</code>，JavaScript 放進 <code>script.js</code>。</p>
+        </article>
+
+        <article class="step">
+          <h3>3. 建立 GitHub Repository</h3>
+          <p>到 GitHub 建立新的 repository，並把所有檔案上傳到根目錄。</p>
+        </article>
+
+        <article class="step">
+          <h3>4. 啟用 GitHub Pages</h3>
+          <p>進入 <code>Settings</code> → <code>Pages</code>，選擇 <code>main branch</code> 和 <code>/root</code>。</p>
+        </article>
+
+        <article class="step">
+          <h3>5. 開啟網站網址</h3>
+          <p>完成後會得到類似 <code>https://你的帳號.github.io/repository名稱/</code> 的網址。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="tips">
+      <h2>三、常見提醒</h2>
+
+      <div class="grid">
+        <article class="card">
+          <h3>檔名要正確</h3>
+          <p>首頁一定要叫 <code>index.html</code>，大小寫也要一致。</p>
+        </article>
+        <article class="card">
+          <h3>路徑要正確</h3>
+          <p>CSS 與 JS 的連結路徑必須和實際檔名相同。</p>
+        </article>
+        <article class="card">
+          <h3>圖片要一起上傳</h3>
+          <p>若 HTML 使用 <code>images/photo.png</code>，GitHub 也要有同樣的資料夾與圖片。</p>
+        </article>
+      </div>
+
+      <div class="quiz">
+        <h3>小測驗</h3>
+        <p id="quiz-text">GitHub Pages 的首頁檔案應該命名為什麼？</p>
+        <button id="answer-button">顯示答案</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Created for learning how to publish a ChatGPT Canvas project as a GitHub Page.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
